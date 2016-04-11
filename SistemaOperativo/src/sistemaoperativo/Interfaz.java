@@ -153,6 +153,8 @@ public class Interfaz extends javax.swing.JFrame {
         
     public int TActual;
     public int valorSpinner;
+    //public int cpuRestante;
+    int cpuAsignado=0;
     
     public Interfaz() {
         initComponents();
@@ -731,12 +733,14 @@ public class Interfaz extends javax.swing.JFrame {
         
     //Proceso Actual
     
-    
+        
         jLabelNombre.setText("Proceso 1");
         jLabelLlegada.setText(tiempoLlegadaProc1);
         jLabelCpuAsignado.setText("0");
         jLabelEnvejecimiento.setText("0");
         jLabelCpuRestante.setText(tiempoTotalEstimProc1);
+        
+        
         
        
         int valorSpinner=(Integer)(jSpinnerQuantum.getValue());
@@ -828,6 +832,18 @@ public class Interfaz extends javax.swing.JFrame {
     TActual++;
     String TiempoActual = String.valueOf(TActual); 
     jLabelTiempoActual.setText(TiempoActual);   
+    
+    //Cpu Asignado
+    cpuAsignado++;
+    String cpuAsig = String.valueOf(cpuAsignado); 
+    jLabelCpuAsignado.setText(cpuAsig);
+    
+    //Cpu Restante
+    int cpuRestante = Integer.parseInt(tiempoTotalEstimProc1);
+    int valRes=cpuRestante-cpuAsignado;
+
+    String cpuRes = String.valueOf(valRes); 
+    jLabelCpuRestante.setText(cpuRes);   
     
     }//GEN-LAST:event_jButton1MouseClicked
 
