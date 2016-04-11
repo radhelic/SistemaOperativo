@@ -439,7 +439,7 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel19.setText("Memoria");
 
         btn_PanelProcesador.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btn_PanelProcesador.setText("Ejecutar Algoritmo");
+        btn_PanelProcesador.setText("Reseteo de Bits NUR");
         btn_PanelProcesador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_PanelProcesadorActionPerformed(evt);
@@ -857,6 +857,29 @@ public class Interfaz extends javax.swing.JFrame {
         /*if(cbx_scheduling.equals("FIFO")&&cbx_replacement.equals("LRU")){
             
         }*/
+        int nur1Pag0Proc1=0;
+        int nur2Pag0Proc1=0;
+        
+        int contPag=0;    
+        DefaultTableModel model=(DefaultTableModel) jTableDatos.getModel();
+        int reemplazo=0;
+        model.setValueAt(reemplazo, 0, 5);
+        model.setValueAt(reemplazo, 0, 6);
+        
+        model.setValueAt(reemplazo, 1, 5);
+        model.setValueAt(reemplazo, 1, 6);
+        
+        model.setValueAt(reemplazo, 2, 5);
+        model.setValueAt(reemplazo, 2, 6);
+        
+        model.setValueAt(reemplazo, 3, 5);
+        model.setValueAt(reemplazo, 3, 6);
+        
+        model.setValueAt(reemplazo, 4, 5);
+        model.setValueAt(reemplazo, 4, 6);
+        contPag++;
+        
+        
         
     }//GEN-LAST:event_btn_PanelProcesadorActionPerformed
 
