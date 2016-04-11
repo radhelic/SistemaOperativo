@@ -7,16 +7,23 @@ package sistemaoperativo;
 
 //import ProyectoSO2.PantallaPaginas;
 //import ProyectoSO2.PantallaProcesos;
+import java.awt.Color;
+import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.swing.JSpinner;
+import javax.swing.JTable;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Familia
  */
+
 
 public class Interfaz extends javax.swing.JFrame {
     
@@ -35,9 +42,12 @@ public class Interfaz extends javax.swing.JFrame {
     int contInstrSolicitadas=1;
     DisenoProceso proc=null;
     
+    //Variables a usar
+    Tabla tabla;
     
     
-    static String cantPagProcesos;
+    // Leer Archivo Txt
+        static String cantPagProcesos;
 	static String cantProcesos;
 	static String tiempoLlegadaProc1;
 	static String tiempoTotalEstimProc1;
@@ -83,6 +93,7 @@ public class Interfaz extends javax.swing.JFrame {
 	static String tiempoTotalEstimProc2;
 	static String estadoProc2;
 	static String cantPagProc2;
+        ///////////////////////////////////////////////
 	static String bitResPag0Proc2;
 	static String tiempoLlegadaPag0Proc2;
 	static String tiempoUltAccPag0Proc2;
@@ -140,7 +151,8 @@ public class Interfaz extends javax.swing.JFrame {
     
         
         
-    public int TActual = 0;
+    public int TActual;
+    public int valorSpinner;
     
     public Interfaz() {
         initComponents();
@@ -192,7 +204,7 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel21 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox<>();
         jLabel22 = new javax.swing.JLabel();
-        jSpinner2 = new javax.swing.JSpinner();
+        jSpinnerQuantum = new javax.swing.JSpinner();
         jPanel5 = new javax.swing.JPanel();
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
@@ -202,6 +214,10 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel27 = new javax.swing.JLabel();
         jSpinner4 = new javax.swing.JSpinner();
         jButton6 = new javax.swing.JButton();
+        jButtonFIFO = new javax.swing.JButton();
+        jButtonLRU = new javax.swing.JButton();
+        jButtonLFU = new javax.swing.JButton();
+        jButtonNUR = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -494,7 +510,8 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel22.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel22.setText("Tamaño de Quantum:");
 
-        jSpinner2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jSpinnerQuantum.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jSpinnerQuantum.setModel(new javax.swing.SpinnerNumberModel(5, 1, 100, 1));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -506,7 +523,7 @@ public class Interfaz extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel22)
                         .addGap(18, 18, 18)
-                        .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jSpinnerQuantum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel21)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -521,7 +538,7 @@ public class Interfaz extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel22)
-                    .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSpinnerQuantum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -597,6 +614,19 @@ public class Interfaz extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jButtonFIFO.setText("FIFO");
+        jButtonFIFO.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFIFOActionPerformed(evt);
+            }
+        });
+
+        jButtonLRU.setText("LRU");
+
+        jButtonLFU.setText("LFU");
+
+        jButtonNUR.setText("NUR");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -611,7 +641,16 @@ public class Interfaz extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 750, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(123, 123, 123)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButtonFIFO)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButtonLRU)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButtonLFU)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButtonNUR))
+                                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -635,18 +674,24 @@ public class Interfaz extends javax.swing.JFrame {
                     .addComponent(jButton2))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButtonFIFO)
+                        .addComponent(jButtonLRU)
+                        .addComponent(jButtonLFU)
+                        .addComponent(jButtonNUR))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(78, Short.MAX_VALUE))
         );
 
@@ -656,7 +701,7 @@ public class Interfaz extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
        
-       
+        
     
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -685,19 +730,30 @@ public class Interfaz extends javax.swing.JFrame {
         */
         
     //Proceso Actual
-    int Quantum = (int) Math.floor(Math.random()*6+1);
-    String qntum=Integer.toString(Quantum);
+    
     
         jLabelNombre.setText("Proceso 1");
         jLabelLlegada.setText(tiempoLlegadaProc1);
         jLabelCpuAsignado.setText("0");
         jLabelEnvejecimiento.setText("0");
         jLabelCpuRestante.setText(tiempoTotalEstimProc1);
-        jLabelQuantumRestante.setText(qntum);
+        
+       
+        int valorSpinner=(Integer)(jSpinnerQuantum.getValue());
+        String valSpin = String.valueOf(valorSpinner);
+        jLabelQuantumRestante.setText(valSpin);
         
         
-    
-    
+        
+        
+        /*SpinnerNumberModel spin = new SpinnerNumberModel();
+        JSpinner spinner = new JSpinner(spin); 
+        jLabelQuantumRestante.setText(((SpinnerNumberModel)spinner.getModel()).getNumber().toString());
+        jLabelQuantumRestante=jSpinnerQuantum;*/
+        
+        
+        
+        
     int contPag=0;    
     DefaultTableModel model=(DefaultTableModel) jTableDatos.getModel();
     model.addRow(new Object[]{contPag,bitResPag0Proc1,tiempoLlegadaPag0Proc1,tiempoUltAccPag0Proc1,cantAccPag0Proc1,nur1Pag0Proc1,nur2Pag0Proc1});
@@ -710,7 +766,39 @@ public class Interfaz extends javax.swing.JFrame {
     contPag++;
     model.addRow(new Object[]{contPag,bitResPag4Proc1,tiempoLlegadaPag4Proc1,tiempoUltAccPag4Proc1,cantAccPag4Proc1,nur1Pag4Proc1,nur2Pag4Proc1});
     contPag++;
-    model.addRow(new Object[]{contPag,bitResPag4Proc1,tiempoLlegadaPag4Proc1,tiempoUltAccPag4Proc1,cantAccPag4Proc1,nur1Pag4Proc1,nur2Pag4Proc1});
+    
+    
+    //Tiempo Actual
+    int tiempo0 = Integer.parseInt(tiempoUltAccPag0Proc1);
+    int tiempo1 = Integer.parseInt(tiempoUltAccPag1Proc1);
+    int tiempo2 = Integer.parseInt(tiempoUltAccPag2Proc1);
+    int tiempo3 = Integer.parseInt(tiempoUltAccPag3Proc1);
+    int tiempo4 = Integer.parseInt(tiempoUltAccPag4Proc1);
+    
+      
+    if((tiempo0>tiempo1)&&(tiempo0>tiempo2)&&(tiempo0>tiempo3)&&(tiempo0>tiempo4)){
+        TActual=tiempo0;}
+    
+    if((tiempo1>tiempo0)&&(tiempo1>tiempo2)&&(tiempo1>tiempo3)&&(tiempo1>tiempo4)){
+        TActual=tiempo1;}
+    
+    if((tiempo2>tiempo0)&&(tiempo2>tiempo1)&&(tiempo2>tiempo3)&&(tiempo2>tiempo4)){
+        TActual=tiempo2;}
+    
+    if((tiempo3>tiempo4)&&(tiempo3>tiempo2)&&(tiempo3>tiempo1)&&(tiempo3>tiempo0)){
+        TActual=tiempo3;}
+    
+    if((tiempo4>tiempo0)&&(tiempo4>tiempo1)&&(tiempo4>tiempo2)&&(tiempo4>tiempo3)){
+        TActual=tiempo4;}
+    
+    
+    /*if(tiempo1>tiempo0 && tiempo1>tiempo2 &&tiempo1>tiempo3 && tiempo1>tiempo3 && tiempo1>tiempo4){    
+    TActual=tiempo1;
+    }*/
+    
+    String TiempoActual = String.valueOf(TActual); 
+    jLabelTiempoActual.setText(TiempoActual);
+  
     
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -728,18 +816,24 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void btn_PanelProcesadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_PanelProcesadorActionPerformed
         btn_PanelProcesador = new javax.swing.JButton();
-         
+        
+        /*if(cbx_scheduling.equals("FIFO")&&cbx_replacement.equals("LRU")){
+            
+        }*/
         
     }//GEN-LAST:event_btn_PanelProcesadorActionPerformed
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        // TODO add your handling code here:
-        
-    TActual++;  
+        // TODO add your handling code here:   
+    TActual++;
     String TiempoActual = String.valueOf(TActual); 
-    jLabelTiempoActual.setText(TiempoActual);
+    jLabelTiempoActual.setText(TiempoActual);   
     
     }//GEN-LAST:event_jButton1MouseClicked
+
+    private void jButtonFIFOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFIFOActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonFIFOActionPerformed
 
     /**
      * @param args the command line arguments
@@ -919,6 +1013,10 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButtonFIFO;
+    private javax.swing.JButton jButtonLFU;
+    private javax.swing.JButton jButtonLRU;
+    private javax.swing.JButton jButtonNUR;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
@@ -955,9 +1053,9 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
     private javax.swing.JSpinner jSpinner3;
     private javax.swing.JSpinner jSpinner4;
+    private javax.swing.JSpinner jSpinnerQuantum;
     private javax.swing.JTable jTableDatos;
     // End of variables declaration//GEN-END:variables
 }
