@@ -1016,23 +1016,7 @@ public class Interfaz extends javax.swing.JFrame {
            
     DefaultTableModel modelFifo=(DefaultTableModel) jTableDatos.getModel();
     modelFifo.setValueAt(mFifo, 0, 3);
-        
-    if(totalQuantum==cpuAsignado){
-       totalQuantum=0;
-       JOptionPane.showMessageDialog(null, "Su quantum ha expirado, regresar a la fial de Ready");
-       DefaultTableModel model2=(DefaultTableModel)jTableDatos.getModel();
-        model2.removeRow(jTableDatos.getRowMargin());
-        model2.removeRow(jTableDatos.getRowMargin());
-        model2.removeRow(jTableDatos.getRowMargin());
-        model2.removeRow(jTableDatos.getRowMargin());
-        model2.removeRow(jTableDatos.getRowMargin());
-        model2.removeRow(jTableDatos.getRowMargin());
-        model2.removeRow(jTableDatos.getRowMargin());
-        
-    
-    }
  
-    
         } else if (MemoriaLru.isSelected()) {
             
         } else if (MemoriaLfu.isSelected()) {
