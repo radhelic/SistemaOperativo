@@ -809,6 +809,7 @@ public class Interfaz extends javax.swing.JFrame {
     model.addRow(new Object[]{contPag,bitResPag4Proc1,tiempoLlegadaPag4Proc1,tiempoUltAccPag4Proc1,cantAccPag4Proc1,nur1Pag4Proc1,nur2Pag4Proc1});
     contPag++;
     
+    
     /*
     //Proceso 2
     model.addRow(new Object[]{contPag,bitResPag0Proc2,tiempoLlegadaPag0Proc2,tiempoUltAccPag0Proc2,cantAccPag0Proc2,nur1Pag0Proc2,nur2Pag0Proc2});
@@ -965,10 +966,34 @@ public class Interfaz extends javax.swing.JFrame {
     totalQuantum=Integer.parseInt(jSpinnerQuantum.getValue().toString());
     int valRestaQuantum=totalQuantum-cpuAsignado;
     String varQuantum = String.valueOf(valRestaQuantum); 
-    //jLabelCpuRestante.setText(cpuRes); 
+    
     if(totalQuantum==cpuAsignado){
-    totalQuantum=0;
-    JOptionPane.showMessageDialog(null, "Su quantum ha expirado, regresar a la fial de Ready");}
+       totalQuantum=0;
+       JOptionPane.showMessageDialog(null, "Su quantum ha expirado, regresar a la fial de Ready");
+       JOptionPane.showMessageDialog(null, "Se cargará el siguiente proceso");
+       DefaultTableModel model2=(DefaultTableModel)jTableDatos.getModel();
+        model2.removeRow(jTableDatos.getRowMargin());
+        model2.removeRow(jTableDatos.getRowMargin());
+        model2.removeRow(jTableDatos.getRowMargin());
+        model2.removeRow(jTableDatos.getRowMargin());
+        model2.removeRow(jTableDatos.getRowMargin());
+        
+        int contPag=0;    
+        DefaultTableModel model3=(DefaultTableModel) jTableDatos.getModel();
+        model3.addRow(new Object[]{contPag,bitResPag0Proc2,tiempoLlegadaPag0Proc2,tiempoUltAccPag0Proc2,cantAccPag0Proc2,nur1Pag0Proc2,nur2Pag0Proc2});
+        contPag++;
+        model3.addRow(new Object[]{contPag,bitResPag1Proc2,tiempoLlegadaPag1Proc2,tiempoUltAccPag1Proc2,cantAccPag1Proc2,nur1Pag1Proc2,nur2Pag1Proc2});
+        contPag++;
+        model3.addRow(new Object[]{contPag,bitResPag2Proc2,tiempoLlegadaPag2Proc2,tiempoUltAccPag2Proc2,cantAccPag2Proc2,nur1Pag2Proc2,nur2Pag2Proc2});
+        contPag++;
+        model3.addRow(new Object[]{contPag,bitResPag3Proc2,tiempoLlegadaPag3Proc2,tiempoUltAccPag3Proc2,cantAccPag3Proc2,nur1Pag3Proc2,nur2Pag3Proc2});
+        contPag++;
+    
+    }
+    
+    
+    //jLabelCpuRestante.setText(cpuRes); 
+    
     /*int var=0;
     do{
         totalQuantum--;
@@ -989,10 +1014,24 @@ public class Interfaz extends javax.swing.JFrame {
     int mFifo = Integer.parseInt(tiempoUltAccPag0Proc1);
     mFifo=TActual;
            
-            
-        DefaultTableModel modelFifo=(DefaultTableModel) jTableDatos.getModel();
-        modelFifo.setValueAt(mFifo, 0, 3);
+    DefaultTableModel modelFifo=(DefaultTableModel) jTableDatos.getModel();
+    modelFifo.setValueAt(mFifo, 0, 3);
         
+    if(totalQuantum==cpuAsignado){
+       totalQuantum=0;
+       JOptionPane.showMessageDialog(null, "Su quantum ha expirado, regresar a la fial de Ready");
+       DefaultTableModel model2=(DefaultTableModel)jTableDatos.getModel();
+        model2.removeRow(jTableDatos.getRowMargin());
+        model2.removeRow(jTableDatos.getRowMargin());
+        model2.removeRow(jTableDatos.getRowMargin());
+        model2.removeRow(jTableDatos.getRowMargin());
+        model2.removeRow(jTableDatos.getRowMargin());
+        model2.removeRow(jTableDatos.getRowMargin());
+        model2.removeRow(jTableDatos.getRowMargin());
+        
+    
+    }
+ 
     
         } else if (MemoriaLru.isSelected()) {
             
