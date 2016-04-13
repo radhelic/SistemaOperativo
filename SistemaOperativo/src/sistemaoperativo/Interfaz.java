@@ -158,13 +158,26 @@ public class Interfaz extends javax.swing.JFrame {
     //Atributos PantallaInicial
     
         
-        
     public int TActual;
+    public int Acc;
+    public int envejecimiento;
+    public int llegadaProc2;
+    public int cpurestante;
+    
     public int valorSpinner;
+    public int temporalLlegada;
+    public int temporalUltAcc;
+    
     //public int cpuRestante;
     int cpuAsignado=0;
     int totalQuantum=0;
     static String totQuantum;
+    
+    int pagEjecRR;
+    int pagEjecFifo;
+    int pagEjecSrt;
+    int pagEjecSjf;
+    int pagEjecHrrn;
     
     public Interfaz() {
         initComponents();
@@ -198,7 +211,7 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jLabelQuantumRestante = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        jSpinnerPaginaEjecutar = new javax.swing.JSpinner();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -210,14 +223,12 @@ public class Interfaz extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         ReseteoBits = new javax.swing.JButton();
-        AlgoritmoMemoria = new javax.swing.JComboBox<>();
         MemoriaFifo = new javax.swing.JRadioButton();
         MemoriaLru = new javax.swing.JRadioButton();
         MemoriaLfu = new javax.swing.JRadioButton();
         MemoriaNur = new javax.swing.JRadioButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
         jLabel22 = new javax.swing.JLabel();
         jSpinnerQuantum = new javax.swing.JSpinner();
         CpuRR = new javax.swing.JRadioButton();
@@ -228,11 +239,11 @@ public class Interfaz extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
+        jLabelNPNombre = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
-        jSpinner3 = new javax.swing.JSpinner();
+        jSpinnerPaginas = new javax.swing.JSpinner();
         jLabel27 = new javax.swing.JLabel();
-        jSpinner4 = new javax.swing.JSpinner();
+        jSpinnerTotalEjec = new javax.swing.JSpinner();
         jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -269,7 +280,13 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel16.setText("Página a Ejecutar:");
 
-        jSpinner1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jSpinnerPaginaEjecutar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jSpinnerPaginaEjecutar.setModel(new javax.swing.SpinnerNumberModel(0, 0, 4, 1));
+        jSpinnerPaginaEjecutar.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpinnerPaginaEjecutarStateChanged(evt);
+            }
+        });
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButton1.setText("Ejecutar Página");
@@ -322,7 +339,7 @@ public class Interfaz extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel16)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jSpinnerPaginaEjecutar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(17, 17, 17)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -361,7 +378,7 @@ public class Interfaz extends javax.swing.JFrame {
                 .addGap(47, 47, 47)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSpinnerPaginaEjecutar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -412,6 +429,11 @@ public class Interfaz extends javax.swing.JFrame {
         });
 
         jButton3.setText("Interrumpir");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -436,7 +458,7 @@ public class Interfaz extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -449,14 +471,6 @@ public class Interfaz extends javax.swing.JFrame {
         ReseteoBits.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ReseteoBitsActionPerformed(evt);
-            }
-        });
-
-        AlgoritmoMemoria.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        AlgoritmoMemoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FIFO", "RR", "SJF", "SRT", "HRRN", " " }));
-        AlgoritmoMemoria.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AlgoritmoMemoriaActionPerformed(evt);
             }
         });
 
@@ -482,29 +496,21 @@ public class Interfaz extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(75, 75, 75)
-                .addComponent(ReseteoBits)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ReseteoBits)
                     .addComponent(MemoriaNur)
                     .addComponent(MemoriaLfu)
                     .addComponent(MemoriaLru)
                     .addComponent(MemoriaFifo)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel19)
-                        .addGap(18, 18, 18)
-                        .addComponent(AlgoritmoMemoria, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel19))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel19)
-                    .addComponent(AlgoritmoMemoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel19)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(MemoriaFifo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -513,18 +519,15 @@ public class Interfaz extends javax.swing.JFrame {
                 .addComponent(MemoriaLfu)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(MemoriaNur)
-                .addGap(21, 21, 21)
+                .addGap(18, 18, 18)
                 .addComponent(ReseteoBits)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel21.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel21.setText("CPU");
-
-        jComboBox2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Round Robin", "FIFO", "SJF", "SRT", "HRRN" }));
 
         jLabel22.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel22.setText("Tamaño de Quantum:");
@@ -544,6 +547,11 @@ public class Interfaz extends javax.swing.JFrame {
 
         grupoCpu.add(CpuRR);
         CpuRR.setText("Round Robin");
+        CpuRR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CpuRRActionPerformed(evt);
+            }
+        });
 
         grupoCpu.add(CpuFifo);
         CpuFifo.setText("FIFO");
@@ -570,12 +578,11 @@ public class Interfaz extends javax.swing.JFrame {
                     .addComponent(CpuFifo)
                     .addComponent(CpuRR)
                     .addComponent(jLabel21)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel22)
                         .addGap(18, 18, 18)
                         .addComponent(jSpinnerQuantum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -583,8 +590,6 @@ public class Interfaz extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel21)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addComponent(CpuRR)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(CpuFifo)
@@ -594,11 +599,11 @@ public class Interfaz extends javax.swing.JFrame {
                 .addComponent(CpuSjf)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(CpuHrrn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel22)
                     .addComponent(jSpinnerQuantum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -609,14 +614,17 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel24.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel24.setText("Nombre:");
 
-        jLabel25.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel25.setText("1");
+        jLabelNPNombre.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         jLabel26.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel26.setText("Páginas:");
 
+        jSpinnerPaginas.setModel(new javax.swing.SpinnerNumberModel(3, 0, 4, 1));
+
         jLabel27.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel27.setText("Ejecución Total:");
+
+        jSpinnerTotalEjec.setModel(new javax.swing.SpinnerNumberModel(10, 1, 20, 1));
 
         jButton6.setText("Crear Proceso");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -636,19 +644,19 @@ public class Interfaz extends javax.swing.JFrame {
                         .addGroup(jPanel5Layout.createSequentialGroup()
                             .addComponent(jLabel24)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabelNPNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jLabel23)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jButton6)
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(jLabel26)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jSpinnerPaginas, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel27)
                         .addGap(18, 18, 18)
-                        .addComponent(jSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(69, 69, 69)))
+                        .addComponent(jSpinnerTotalEjec, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(57, 57, 57)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -659,15 +667,15 @@ public class Interfaz extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel24)
-                    .addComponent(jLabel25))
+                    .addComponent(jLabelNPNombre))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel26)
-                    .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSpinnerPaginas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel27)
-                    .addComponent(jSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSpinnerTotalEjec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jButton6)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -679,28 +687,25 @@ public class Interfaz extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(19, 19, 19)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 750, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelTiempoActual, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(34, 34, 34)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 750, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(205, 205, 205)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(jLabelTiempoActual, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(730, 730, 730)
+                        .addComponent(jButton2)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jButton2))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(53, 53, 53))
         );
         layout.setVerticalGroup(
@@ -714,12 +719,12 @@ public class Interfaz extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(46, 46, 46)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -743,6 +748,13 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
+        
+        int pag=Integer.parseInt(jSpinnerPaginas.getValue().toString());
+        int totejec=Integer.parseInt(jSpinnerTotalEjec.getValue().toString());
+        
+        JOptionPane.showMessageDialog(null, "Se ha creado un nuevo proceso"+ "\ntamaño de pagina: "+pag+"\nejecución total: "+totejec);
+        
+        
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -762,52 +774,60 @@ public class Interfaz extends javax.swing.JFrame {
         */
         
     //Proceso Actual
-    
+   
+        int llegadaProc2=6;
+        String lp2 = String.valueOf(llegadaProc2); 
         
-        jLabelNombre.setText("Proceso 1");
-        jLabelLlegada.setText(tiempoLlegadaProc1);
+        int cpurestante=9;
+        String cr2 = String.valueOf(cpurestante);  
+        
+        
+        
+        jLabelNombre.setText("2");
+        jLabelLlegada.setText(lp2);
         jLabelCpuAsignado.setText("0");
         jLabelEnvejecimiento.setText("0");
-        jLabelCpuRestante.setText(tiempoTotalEstimProc1);
+        jLabelCpuRestante.setText(cr2);
+        jLabelNPNombre.setText("4");
         
         
-        
-       /* int QntmRes;
-        final JSpinner valorspin = new JSpinner(); 
-        JComponent comp = spinner.getEditor(); 
-        JFormattedTextField field = (JFormattedTextField) comp.getComponent(0); 
-        DefaultFormatter formatter = (DefaultFormatter) field.getFormatter(); 
-        formatter.setCommitsOnValidEdit(true); 
-        @Override 
-        public void stateChanged(ChangeEvent e) { 
-        LOG.info("value changed: " + valorspin.getValue()); }
-        */
-       
-       
-        
-        
-        
-        
-        /*SpinnerNumberModel spin = new SpinnerNumberModel();
-        JSpinner spinner = new JSpinner(spin); 
-        jLabelQuantumRestante.setText(((SpinnerNumberModel)spinner.getModel()).getNumber().toString());
-        jLabelQuantumRestante=jSpinnerQuantum;*/
-        
-        
-        
-    //Proceso 1    
+    //Proceso 2    
     int contPag=0;    
     DefaultTableModel model=(DefaultTableModel) jTableDatos.getModel();
     model.addRow(new Object[]{contPag,bitResPag0Proc1,tiempoLlegadaPag0Proc1,tiempoUltAccPag0Proc1,cantAccPag0Proc1,nur1Pag0Proc1,nur2Pag0Proc1});
     contPag++;
-    model.addRow(new Object[]{contPag,bitResPag1Proc1,tiempoLlegadaPag1Proc1,tiempoUltAccPag1Proc1,cantAccPag1Proc1,nur1Pag1Proc1,nur2Pag1Proc1});
+    model.addRow(new Object[]{contPag,bitResPag0Proc2,tiempoLlegadaPag0Proc2,tiempoUltAccPag0Proc2,cantAccPag0Proc2,nur1Pag0Proc2,nur2Pag0Proc2});
     contPag++;
-    model.addRow(new Object[]{contPag,bitResPag2Proc1,tiempoLlegadaPag2Proc1,tiempoUltAccPag2Proc1,cantAccPag2Proc1,nur1Pag2Proc1,nur2Pag2Proc1});
+    model.addRow(new Object[]{contPag,bitResPag1Proc2,tiempoLlegadaPag1Proc2,tiempoUltAccPag1Proc2,cantAccPag1Proc2,nur1Pag1Proc2,nur2Pag1Proc2});
     contPag++;
-    model.addRow(new Object[]{contPag,bitResPag3Proc1,tiempoLlegadaPag3Proc1,tiempoUltAccPag3Proc1,cantAccPag3Proc1,nur1Pag3Proc1,nur2Pag3Proc1});
+    model.addRow(new Object[]{contPag,bitResPag2Proc2,tiempoLlegadaPag2Proc2,tiempoUltAccPag2Proc2,cantAccPag2Proc2,nur1Pag2Proc2,nur2Pag2Proc2});
     contPag++;
-    model.addRow(new Object[]{contPag,bitResPag4Proc1,tiempoLlegadaPag4Proc1,tiempoUltAccPag4Proc1,cantAccPag4Proc1,nur1Pag4Proc1,nur2Pag4Proc1});
-    contPag++;
+    
+        TActual=25;
+        String TiempoActual = String.valueOf(TActual); 
+        jLabelTiempoActual.setText(TiempoActual); 
+        
+        /*
+        int llegadaProc3=13;
+        String lp3 = String.valueOf(llegadaProc3); 
+        
+        int cpurestante3=21;
+        String cr3 = String.valueOf(cpurestante3); 
+        
+        int envejecimiento=1;
+        String env = String.valueOf(envejecimiento);
+    
+        jLabelNombre.setText("3");
+        jLabelLlegada.setText(lp3);
+        jLabelCpuAsignado.setText("0");
+        jLabelEnvejecimiento.setText(env);
+        jLabelCpuRestante.setText(cr3);
+        jLabelNPNombre.setText("4");*/
+    
+        
+    
+    //model.addRow(new Object[]{contPag,bitResPag4Proc1,tiempoLlegadaPag4Proc1,tiempoUltAccPag4Proc1,cantAccPag4Proc1,nur1Pag4Proc1,nur2Pag4Proc1});
+    //contPag++;
     
     
     /*
@@ -896,8 +916,6 @@ public class Interfaz extends javax.swing.JFrame {
     TActual=tiempo1;
     }*/
     
-    String TiempoActual = String.valueOf(TActual); 
-    jLabelTiempoActual.setText(TiempoActual);
     
   
     MemoriaFifo.setSelected(true);
@@ -908,18 +926,12 @@ public class Interfaz extends javax.swing.JFrame {
         ReseteoBits = new javax.swing.JButton();
     }//GEN-LAST:event_jButton2MouseClicked
 
-    private void AlgoritmoMemoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlgoritmoMemoriaActionPerformed
-        AlgoritmoMemoria = new javax.swing.JComboBox();
-    }//GEN-LAST:event_AlgoritmoMemoriaActionPerformed
-
     private void ReseteoBitsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReseteoBitsActionPerformed
         ReseteoBits = new javax.swing.JButton();
         
         /*if(cbx_scheduling.equals("FIFO")&&cbx_replacement.equals("LRU")){
             
         }*/
-        int nur1Pag0Proc1=0;
-        int nur2Pag0Proc1=0;
         
         int contPag=0;    
         DefaultTableModel model=(DefaultTableModel) jTableDatos.getModel();
@@ -946,6 +958,13 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:   
+    
+    //public int TActual;
+    //public int Acc;
+    //public int envejecimiento;
+    //public int llegadaProc2;
+    //public int cpurestante;
+        
     TActual++;
     String TiempoActual = String.valueOf(TActual); 
     jLabelTiempoActual.setText(TiempoActual);   
@@ -967,29 +986,148 @@ public class Interfaz extends javax.swing.JFrame {
     int valRestaQuantum=totalQuantum-cpuAsignado;
     String varQuantum = String.valueOf(valRestaQuantum); 
     
-    if(totalQuantum==cpuAsignado){
-       totalQuantum=0;
-       JOptionPane.showMessageDialog(null, "Su quantum ha expirado, regresar a la fial de Ready");
-       JOptionPane.showMessageDialog(null, "Se cargará el siguiente proceso");
+    
+    /*if(MemoriaFifo.isSelected()&&CpuRR.isSelected()){
+
+       JOptionPane.showMessageDialog(null, "Ocurrió un fallo de página");
        DefaultTableModel model2=(DefaultTableModel)jTableDatos.getModel();
         model2.removeRow(jTableDatos.getRowMargin());
         model2.removeRow(jTableDatos.getRowMargin());
         model2.removeRow(jTableDatos.getRowMargin());
-        model2.removeRow(jTableDatos.getRowMargin());
-        model2.removeRow(jTableDatos.getRowMargin());
+        model2.removeRow(jTableDatos.getRowMargin());  
+    
+    }*/
+    
+    //int pagEjecRR
+    //int pagEjecFifo
+    //int pagEjecSrt
+    //int pagEjecSjf
+    //int pagEjecHrrn
+    
+    int pagEjecRR=Integer.parseInt(jSpinnerPaginaEjecutar.getValue().toString());
+    //JOptionPane.showMessageDialog(null, pagEjec);
+    
+    /*if(pagEjecRR==0){
+        JOptionPane.showMessageDialog(null, "Ocurrió un fallo de página");
         
-        int contPag=0;    
+        //Proceso 3
+        int contPag2=0;
+        temporalLlegada=26;
+        temporalUltAcc=3;
         DefaultTableModel model3=(DefaultTableModel) jTableDatos.getModel();
-        model3.addRow(new Object[]{contPag,bitResPag0Proc2,tiempoLlegadaPag0Proc2,tiempoUltAccPag0Proc2,cantAccPag0Proc2,nur1Pag0Proc2,nur2Pag0Proc2});
-        contPag++;
-        model3.addRow(new Object[]{contPag,bitResPag1Proc2,tiempoLlegadaPag1Proc2,tiempoUltAccPag1Proc2,cantAccPag1Proc2,nur1Pag1Proc2,nur2Pag1Proc2});
-        contPag++;
-        model3.addRow(new Object[]{contPag,bitResPag2Proc2,tiempoLlegadaPag2Proc2,tiempoUltAccPag2Proc2,cantAccPag2Proc2,nur1Pag2Proc2,nur2Pag2Proc2});
-        contPag++;
-        model3.addRow(new Object[]{contPag,bitResPag3Proc2,tiempoLlegadaPag3Proc2,tiempoUltAccPag3Proc2,cantAccPag3Proc2,nur1Pag3Proc2,nur2Pag3Proc2});
-        contPag++;
+        model3.addRow(new Object[]{contPag2,1,9,temporalLlegada,temporalUltAcc,0,0});
+        contPag2++;
+        model3.addRow(new Object[]{contPag2,bitResPag0Proc3,tiempoLlegadaPag0Proc3,tiempoUltAccPag0Proc3,cantAccPag0Proc3,nur1Pag0Proc3,nur2Pag0Proc3});
+        contPag2++;
+        model3.addRow(new Object[]{contPag2,bitResPag1Proc3,tiempoLlegadaPag1Proc3,tiempoUltAccPag1Proc3,cantAccPag1Proc3,nur1Pag1Proc3,nur2Pag1Proc3});
+        contPag2++;
+        model3.addRow(new Object[]{contPag2,bitResPag2Proc3,tiempoLlegadaPag2Proc3,tiempoUltAccPag2Proc3,cantAccPag2Proc3,nur1Pag2Proc3,nur2Pag2Proc3});
+        contPag2++;
+        model3.addRow(new Object[]{contPag2,bitResPag3Proc3,tiempoLlegadaPag3Proc3,tiempoUltAccPag3Proc3,cantAccPag3Proc3,nur1Pag3Proc3,nur2Pag3Proc3});
+        contPag2++;
+        
+    }
+    */
+    if(pagEjecRR==1){
+        Acc++;
+        
+         int mFifoFifo = Integer.parseInt(tiempoUltAccPag0Proc1);
+            mFifoFifo=(Acc+temporalUltAcc)+mFifoFifo;
+
+            DefaultTableModel modelFifo=(DefaultTableModel) jTableDatos.getModel();
+            modelFifo.setValueAt(mFifoFifo, 1, 3);
+            
+            int contPag=0;    
+            DefaultTableModel model=(DefaultTableModel) jTableDatos.getModel();
+            model.addRow(new Object[]{contPag,bitResPag0Proc1,tiempoLlegadaPag0Proc1,tiempoUltAccPag0Proc1,cantAccPag0Proc1,nur1Pag0Proc1,nur2Pag0Proc1});
+            contPag++;
+            model.addRow(new Object[]{contPag,bitResPag0Proc2,tiempoLlegadaPag0Proc2,tiempoUltAccPag0Proc2,cantAccPag0Proc2,nur1Pag0Proc2,nur2Pag0Proc2});
+            contPag++;
+            model.addRow(new Object[]{contPag,bitResPag1Proc2,tiempoLlegadaPag1Proc2,tiempoUltAccPag1Proc2,cantAccPag1Proc2,nur1Pag1Proc2,nur2Pag1Proc2});
+            contPag++;
+            model.addRow(new Object[]{contPag,bitResPag2Proc2,tiempoLlegadaPag2Proc2,tiempoUltAccPag2Proc2,cantAccPag2Proc2,nur1Pag2Proc2,nur2Pag2Proc2});
+            contPag++;
     
     }
+    
+    if(pagEjecSrt==0){
+                
+                DefaultTableModel model2=(DefaultTableModel)jTableDatos.getModel();
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                
+                int llegadaProc2=13;
+                String lp2 = String.valueOf(llegadaProc2); 
+
+                int cpurestante=21;
+                String cr2 = String.valueOf(cpurestante);  
+
+                jLabelNombre.setText("3");
+                jLabelLlegada.setText(lp2);
+                jLabelCpuAsignado.setText("0");
+                jLabelEnvejecimiento.setText("1");
+                jLabelCpuRestante.setText(cr2);
+                jLabelNPNombre.setText("4");
+
+                //Proceso 3
+                int contPag2=0;
+                temporalLlegada=26;
+                temporalUltAcc=3;
+                DefaultTableModel model3=(DefaultTableModel) jTableDatos.getModel();
+                model3.addRow(new Object[]{contPag2,1,9,temporalLlegada,temporalUltAcc,0,0});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag0Proc3,tiempoLlegadaPag0Proc3,tiempoUltAccPag0Proc3,cantAccPag0Proc3,nur1Pag0Proc3,nur2Pag0Proc3});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag1Proc3,tiempoLlegadaPag1Proc3,tiempoUltAccPag1Proc3,cantAccPag1Proc3,nur1Pag1Proc3,nur2Pag1Proc3});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag2Proc3,tiempoLlegadaPag2Proc3,tiempoUltAccPag2Proc3,cantAccPag2Proc3,nur1Pag2Proc3,nur2Pag2Proc3});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag3Proc3,tiempoLlegadaPag3Proc3,tiempoUltAccPag3Proc3,cantAccPag3Proc3,nur1Pag3Proc3,nur2Pag3Proc3});
+                contPag2++;
+                
+            }
+    
+    if(pagEjecSrt==0){
+                JOptionPane.showMessageDialog(null, "Ocurrió un fallo de página");
+                DefaultTableModel model2=(DefaultTableModel)jTableDatos.getModel();
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                
+                int llegadaProc2=13;
+                String lp2 = String.valueOf(llegadaProc2); 
+
+                int cpurestante=21;
+                String cr2 = String.valueOf(cpurestante);  
+
+                jLabelNombre.setText("3");
+                jLabelLlegada.setText(lp2);
+                jLabelCpuAsignado.setText("0");
+                jLabelEnvejecimiento.setText("1");
+                jLabelCpuRestante.setText(cr2);
+                jLabelNPNombre.setText("4");
+
+                //Proceso 3
+                int contPag2=0;
+                temporalLlegada=26;
+                temporalUltAcc=3;
+                DefaultTableModel model3=(DefaultTableModel) jTableDatos.getModel();
+                model3.addRow(new Object[]{contPag2,1,9,temporalLlegada,temporalUltAcc,0,0});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag0Proc3,tiempoLlegadaPag0Proc3,tiempoUltAccPag0Proc3,cantAccPag0Proc3,nur1Pag0Proc3,nur2Pag0Proc3});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag1Proc3,tiempoLlegadaPag1Proc3,tiempoUltAccPag1Proc3,cantAccPag1Proc3,nur1Pag1Proc3,nur2Pag1Proc3});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag2Proc3,tiempoLlegadaPag2Proc3,tiempoUltAccPag2Proc3,cantAccPag2Proc3,nur1Pag2Proc3,nur2Pag2Proc3});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag3Proc3,tiempoLlegadaPag3Proc3,tiempoUltAccPag3Proc3,cantAccPag3Proc3,nur1Pag3Proc3,nur2Pag3Proc3});
+                contPag2++;
+            }
+    
     
     
     //jLabelCpuRestante.setText(cpuRes); 
@@ -1005,23 +1143,323 @@ public class Interfaz extends javax.swing.JFrame {
     jLabelQuantumRestante.setText(totalQntm);*/
     
     //jLabelQuantumRestante.setText(jSpinnerQuantum.getValue().toString());
-    //jLabelQuantumRestante.setText(jSpinnerQuantum.getValue().toString());
     
+    //int pagEjecRR
+    //int pagEjecFifo
+    //int pagEjecSrt
+    //int pagEjecSjf
+    //int pagEjecHrrn
     
     // Seleccion de Opcion de Memoria y Cpu
-    if (MemoriaFifo.isSelected()&&CpuRR.isSelected()) {
+    if (MemoriaFifo.isSelected()&&CpuRR.isSelected()||MemoriaLru.isSelected()&&CpuRR.isSelected()) {
     //jLabelTiempoActual.setText(TiempoActual);
-    int mFifo = Integer.parseInt(tiempoUltAccPag0Proc1);
-    mFifo=TActual;
+    int mFifoRR = Integer.parseInt(tiempoUltAccPag0Proc1);
+    mFifoRR=TActual;
            
     DefaultTableModel modelFifo=(DefaultTableModel) jTableDatos.getModel();
-    modelFifo.setValueAt(mFifo, 0, 3);
- 
-        } else if (MemoriaLru.isSelected()) {
+    modelFifo.setValueAt(mFifoRR, 0, 3);
+    
+    JOptionPane.showMessageDialog(null, "Ocurrió un fallo de página");
+       DefaultTableModel model2=(DefaultTableModel)jTableDatos.getModel();
+        model2.removeRow(jTableDatos.getRowMargin());
+        model2.removeRow(jTableDatos.getRowMargin());
+        model2.removeRow(jTableDatos.getRowMargin());
+        model2.removeRow(jTableDatos.getRowMargin());
+        
+        if(pagEjecRR==0){
+        JOptionPane.showMessageDialog(null, "Ocurrió un fallo de página");
+        
+        int llegadaProc2=21;
+        String lp2 = String.valueOf(llegadaProc2); 
+        
+        int cpurestante=9;
+        String cr2 = String.valueOf(cpurestante);  
+        
+        jLabelNombre.setText("3");
+        jLabelLlegada.setText(lp2);
+        jLabelCpuAsignado.setText("0");
+        jLabelEnvejecimiento.setText("1");
+        jLabelCpuRestante.setText(cr2);
+        jLabelNPNombre.setText("4");
+        
+        //Proceso 3
+        int contPag2=0;
+        temporalLlegada=26;
+        temporalUltAcc=3;
+        DefaultTableModel model3=(DefaultTableModel) jTableDatos.getModel();
+        model3.addRow(new Object[]{contPag2,1,9,temporalLlegada,temporalUltAcc,0,0});
+        contPag2++;
+        model3.addRow(new Object[]{contPag2,bitResPag0Proc3,tiempoLlegadaPag0Proc3,tiempoUltAccPag0Proc3,cantAccPag0Proc3,nur1Pag0Proc3,nur2Pag0Proc3});
+        contPag2++;
+        model3.addRow(new Object[]{contPag2,bitResPag1Proc3,tiempoLlegadaPag1Proc3,tiempoUltAccPag1Proc3,cantAccPag1Proc3,nur1Pag1Proc3,nur2Pag1Proc3});
+        contPag2++;
+        model3.addRow(new Object[]{contPag2,bitResPag2Proc3,tiempoLlegadaPag2Proc3,tiempoUltAccPag2Proc3,cantAccPag2Proc3,nur1Pag2Proc3,nur2Pag2Proc3});
+        contPag2++;
+        model3.addRow(new Object[]{contPag2,bitResPag3Proc3,tiempoLlegadaPag3Proc3,tiempoUltAccPag3Proc3,cantAccPag3Proc3,nur1Pag3Proc3,nur2Pag3Proc3});
+        contPag2++;
+        
+        
+    }
+    
+    if(pagEjecRR==1){
+        
+         int mFifoFifo = Integer.parseInt(tiempoUltAccPag0Proc3);
+         Acc++;
+         mFifoFifo+=(Acc*2)+1;
             
-        } else if (MemoriaLfu.isSelected()) {
+        //Proceso 3
+           
+        modelFifo.setValueAt(mFifoFifo, 1, 4); 
+        int contPag2=0;
+        temporalLlegada=26;
+        temporalUltAcc=3;
+        DefaultTableModel model3=(DefaultTableModel) jTableDatos.getModel();
+        model3.addRow(new Object[]{contPag2,1,9,temporalLlegada,temporalUltAcc,0,0});
+        contPag2++;
+        model3.addRow(new Object[]{contPag2,bitResPag0Proc3,tiempoLlegadaPag0Proc3,tiempoUltAccPag0Proc3,cantAccPag0Proc3,nur1Pag0Proc3,nur2Pag0Proc3});
+        contPag2++;
+        model3.addRow(new Object[]{contPag2,bitResPag1Proc3,tiempoLlegadaPag1Proc3,tiempoUltAccPag1Proc3,(mFifoFifo+cantAccPag1Proc3),nur1Pag1Proc3,nur2Pag1Proc3});
+        contPag2++;
+        model3.addRow(new Object[]{contPag2,bitResPag2Proc3,tiempoLlegadaPag2Proc3,tiempoUltAccPag2Proc3,cantAccPag2Proc3,nur1Pag2Proc3,nur2Pag2Proc3});
+        contPag2++;
+        model3.addRow(new Object[]{contPag2,bitResPag3Proc3,tiempoLlegadaPag3Proc3,tiempoUltAccPag3Proc3,cantAccPag3Proc3,nur1Pag3Proc3,nur2Pag3Proc3});
+        contPag2++;
+        int reemplazo=1;
+        model3.setValueAt(TiempoActual, 1, 3);
+        model3.setValueAt(reemplazo, 1, 5);
+        
+        jLabelCpuRestante.setText("8");
+        
+    
+    }
+ 
+        } else if (MemoriaFifo.isSelected()&&CpuFifo.isSelected()) {
+        
+            int llegadaProc2=13;
+            String lp2 = String.valueOf(llegadaProc2); 
 
-        }else if (MemoriaNur.isSelected()) {
+            int cpurestante=21;
+            String cr2 = String.valueOf(cpurestante); 
+/*
+            jLabelNombre.setText("3");
+            jLabelLlegada.setText(lp2);
+            jLabelCpuAsignado.setText("0");
+            jLabelEnvejecimiento.setText("1");
+            jLabelCpuRestante.setText(cr2);
+            jLabelNPNombre.setText("4");*/
+            
+            cpuRestante = Integer.parseInt(tiempoTotalEstimProc1);
+            valRes=cpuRestante-cpuAsignado;
+            cpuRes = String.valueOf(valRes); 
+            jLabelCpuRestante.setText(cpuRes);
+            
+            int mFifoFifo = Integer.parseInt(tiempoUltAccPag0Proc1);
+            mFifoFifo=Acc;
+            
+            if(pagEjecFifo==0){
+                
+                DefaultTableModel model2=(DefaultTableModel)jTableDatos.getModel();
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                
+               JOptionPane.showMessageDialog(null, "Ocurrió un fallo de página");
+                int contPag2=0;
+                temporalLlegada=26;
+                temporalUltAcc=3;
+                DefaultTableModel model3=(DefaultTableModel) jTableDatos.getModel();
+                model3.addRow(new Object[]{contPag2,1,9,temporalLlegada,temporalUltAcc,0,0});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag0Proc3,tiempoLlegadaPag0Proc3,tiempoUltAccPag0Proc3,cantAccPag0Proc3,nur1Pag0Proc3,nur2Pag0Proc3});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag1Proc3,tiempoLlegadaPag1Proc3,tiempoUltAccPag1Proc3,(mFifoFifo+cantAccPag1Proc3),nur1Pag1Proc3,nur2Pag1Proc3});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag2Proc3,tiempoLlegadaPag2Proc3,tiempoUltAccPag2Proc3,cantAccPag2Proc3,nur1Pag2Proc3,nur2Pag2Proc3});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag3Proc3,tiempoLlegadaPag3Proc3,tiempoUltAccPag3Proc3,cantAccPag3Proc3,nur1Pag3Proc3,nur2Pag3Proc3});
+                contPag2++;
+                int reemplazo=1;
+                model3.setValueAt(TiempoActual, 1, 3);
+                model3.setValueAt(reemplazo, 1, 5);
+                
+            }
+            
+            
+            if(pagEjecFifo==1){
+                if(totalQuantum>=0){
+
+                    int var=0;
+                    do{
+                        totalQuantum--;
+                        var=totalQuantum;
+                    JOptionPane.showMessageDialog(null, "Ha terminado la ejecución actual");
+
+                    }while(totalQuantum>0);
+                    String totalQntm = String.valueOf(var);
+                    jLabelQuantumRestante.setText(totalQntm);
+
+                }
+            }
+             
+ 
+        } 
+    
+    
+    
+    
+        else if (MemoriaFifo.isSelected()&&CpuSrt.isSelected()) {
+            
+            if(pagEjecSrt==0){
+                
+                DefaultTableModel model2=(DefaultTableModel)jTableDatos.getModel();
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                
+                int llegadaProc2=13;
+                String lp2 = String.valueOf(llegadaProc2); 
+
+                int cpurestante=21;
+                String cr2 = String.valueOf(cpurestante);  
+
+                jLabelNombre.setText("3");
+                jLabelLlegada.setText(lp2);
+                jLabelCpuAsignado.setText("0");
+                jLabelEnvejecimiento.setText("1");
+                jLabelCpuRestante.setText(cr2);
+                jLabelNPNombre.setText("4");
+                
+                //Cpu Asignado
+                cpuAsignado++;
+                cpuAsig = String.valueOf(cpuAsignado); 
+                jLabelCpuAsignado.setText(cpuAsig);
+
+                //Cpu Restante
+                cpuRestante = Integer.parseInt(tiempoTotalEstimProc1);
+                valRes=cpuRestante-cpuAsignado;
+                cpuRes = String.valueOf(valRes); 
+                jLabelCpuRestante.setText(cpuRes);  
+                
+                //Proceso 3
+                int contPag2=0;
+                temporalLlegada=26;
+                temporalUltAcc=3;
+                DefaultTableModel model3=(DefaultTableModel) jTableDatos.getModel();
+                model3.addRow(new Object[]{contPag2,1,9,temporalLlegada,temporalUltAcc,0,0});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag0Proc3,tiempoLlegadaPag0Proc3,tiempoUltAccPag0Proc3,cantAccPag0Proc3,nur1Pag0Proc3,nur2Pag0Proc3});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag1Proc3,tiempoLlegadaPag1Proc3,tiempoUltAccPag1Proc3,cantAccPag1Proc3,nur1Pag1Proc3,nur2Pag1Proc3});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag2Proc3,tiempoLlegadaPag2Proc3,tiempoUltAccPag2Proc3,cantAccPag2Proc3,nur1Pag2Proc3,nur2Pag2Proc3});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag3Proc3,tiempoLlegadaPag3Proc3,tiempoUltAccPag3Proc3,cantAccPag3Proc3,nur1Pag3Proc3,nur2Pag3Proc3});
+                contPag2++;
+                int reemplazo=1;
+                model3.setValueAt(TiempoActual, 1, 3);
+                model3.setValueAt(reemplazo, 1, 5);
+                
+            }
+            
+        } else if (MemoriaFifo.isSelected()&&CpuSjf.isSelected()) {
+            
+            if(pagEjecSrt==0){
+                JOptionPane.showMessageDialog(null, "Ocurrió un fallo de página");
+                DefaultTableModel model2=(DefaultTableModel)jTableDatos.getModel();
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                
+                int llegadaProc2=13;
+                String lp2 = String.valueOf(llegadaProc2); 
+
+                int cpurestante=21;
+                String cr2 = String.valueOf(cpurestante);  
+
+                jLabelNombre.setText("3");
+                jLabelLlegada.setText(lp2);
+                jLabelCpuAsignado.setText("0");
+                jLabelEnvejecimiento.setText("1");
+                jLabelCpuRestante.setText(cr2);
+                jLabelNPNombre.setText("4");
+
+                //Proceso 3
+                int contPag2=0;
+                temporalLlegada=26;
+                temporalUltAcc=3;
+                DefaultTableModel model3=(DefaultTableModel) jTableDatos.getModel();
+                model3.addRow(new Object[]{contPag2,1,9,temporalLlegada,temporalUltAcc,0,0});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag0Proc3,tiempoLlegadaPag0Proc3,tiempoUltAccPag0Proc3,cantAccPag0Proc3,nur1Pag0Proc3,nur2Pag0Proc3});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag1Proc3,tiempoLlegadaPag1Proc3,tiempoUltAccPag1Proc3,cantAccPag1Proc3,nur1Pag1Proc3,nur2Pag1Proc3});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag2Proc3,tiempoLlegadaPag2Proc3,tiempoUltAccPag2Proc3,cantAccPag2Proc3,nur1Pag2Proc3,nur2Pag2Proc3});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag3Proc3,tiempoLlegadaPag3Proc3,tiempoUltAccPag3Proc3,cantAccPag3Proc3,nur1Pag3Proc3,nur2Pag3Proc3});
+                contPag2++;
+            }
+
+        }else if (MemoriaFifo.isSelected()&&CpuHrrn.isSelected()) {
+            
+            if(pagEjecSrt==0){
+                
+                DefaultTableModel model2=(DefaultTableModel)jTableDatos.getModel();
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                model2.removeRow(jTableDatos.getRowMargin());
+                
+                int llegadaProc2=13;
+                String lp2 = String.valueOf(llegadaProc2); 
+
+                int cpurestante=21;
+                String cr2 = String.valueOf(cpurestante);  
+
+                jLabelNombre.setText("3");
+                jLabelLlegada.setText(lp2);
+                jLabelCpuAsignado.setText("0");
+                jLabelEnvejecimiento.setText("1");
+                jLabelCpuRestante.setText(cr2);
+                jLabelNPNombre.setText("4");
+                
+                //Cpu Asignado
+                cpuAsignado++;
+                cpuAsig = String.valueOf(cpuAsignado); 
+                jLabelCpuAsignado.setText(cpuAsig);
+
+                //Cpu Restante
+                cpuRestante = Integer.parseInt(tiempoTotalEstimProc1);
+                valRes=cpuRestante-cpuAsignado;
+                cpuRes = String.valueOf(valRes); 
+                jLabelCpuRestante.setText(cpuRes);  
+                
+                //Proceso 3
+                int contPag2=0;
+                temporalLlegada=26;
+                temporalUltAcc=3;
+                DefaultTableModel model3=(DefaultTableModel) jTableDatos.getModel();
+                model3.addRow(new Object[]{contPag2,1,9,temporalLlegada,temporalUltAcc,0,0});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag0Proc3,tiempoLlegadaPag0Proc3,tiempoUltAccPag0Proc3,cantAccPag0Proc3,nur1Pag0Proc3,nur2Pag0Proc3});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag1Proc3,tiempoLlegadaPag1Proc3,tiempoUltAccPag1Proc3,(cantAccPag1Proc3),nur1Pag1Proc3,nur2Pag1Proc3});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag2Proc3,tiempoLlegadaPag2Proc3,tiempoUltAccPag2Proc3,cantAccPag2Proc3,nur1Pag2Proc3,nur2Pag2Proc3});
+                contPag2++;
+                model3.addRow(new Object[]{contPag2,bitResPag3Proc3,tiempoLlegadaPag3Proc3,tiempoUltAccPag3Proc3,cantAccPag3Proc3,nur1Pag3Proc3,nur2Pag3Proc3});
+                contPag2++;
+                int reemplazo=1;
+                model3.setValueAt(TiempoActual, 1, 3);
+                model3.setValueAt(reemplazo, 1, 5);
+                
+            }
 
         }
     
@@ -1043,6 +1481,47 @@ public class Interfaz extends javax.swing.JFrame {
         
     
     }//GEN-LAST:event_MemoriaFifoActionPerformed
+
+    private void jSpinnerPaginaEjecutarStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerPaginaEjecutarStateChanged
+        // TODO add your handling code here:
+        
+        int pagEjecRR=Integer.parseInt(jSpinnerPaginaEjecutar.getValue().toString());
+        int pagEjecFifo=Integer.parseInt(jSpinnerPaginaEjecutar.getValue().toString());
+        int pagEjecSrt=Integer.parseInt(jSpinnerPaginaEjecutar.getValue().toString());
+        int pagEjecSjf=Integer.parseInt(jSpinnerPaginaEjecutar.getValue().toString());
+        int pagEjecHrrn=Integer.parseInt(jSpinnerPaginaEjecutar.getValue().toString());
+        
+    }//GEN-LAST:event_jSpinnerPaginaEjecutarStateChanged
+
+    private void CpuRRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CpuRRActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CpuRRActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        
+        if (MemoriaFifo.isSelected()&&CpuRR.isSelected()) {
+            JOptionPane.showMessageDialog(null, "El proceso se ha terminado o tuvo un fallo de pagina y pasara a la lista de finish");
+        }
+        if (MemoriaFifo.isSelected()&&CpuFifo.isSelected()) {
+            JOptionPane.showMessageDialog(null, "El proceso se ha terminado o tuvo un fallo de pagina y pasara a finish");
+            JOptionPane.showMessageDialog(null, "Ha terminado la ejecucion del proceso actual."+ "\nTiempo de llegada: Running 6"+"\nTiempos de llegada de procesos en ready"+"\nProceso 3: 13");
+        }
+        
+        if (MemoriaFifo.isSelected()&&CpuSrt.isSelected()) {
+            JOptionPane.showMessageDialog(null, "El proceso actual ira a la fila de block y se cargara el siguiente proceso en ready en caso de que exista alguno");
+        }
+        
+        if (MemoriaFifo.isSelected()&&CpuSjf.isSelected()) {
+            JOptionPane.showMessageDialog(null, "El proceso se ha terminado o tuvo un fallo de pagina y pasara a la lista de finish");
+            JOptionPane.showMessageDialog(null, "Ha terminado la ejecucion del proceso actual."+ "\nTiempo de llegada: Running 9"+"\nTiempos de llegada de procesos en ready"+"\nProceso 3: 21"+"\nProceso 1: 15");
+        }
+        
+        if (MemoriaFifo.isSelected()&&CpuHrrn.isSelected()) {
+            JOptionPane.showMessageDialog(null, "El primer proceso de la fila bloqued pasa a la fila ready");
+        }
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1094,7 +1573,7 @@ public class Interfaz extends javax.swing.JFrame {
     	ArrayList <String> ls = new ArrayList<String>();
     	    	
     	String cadena;
-      	String archivo = "C:/ArchivoEntradaSO.txt";
+      	String archivo = "C:/archivinSO2.txt";
      	FileReader f = new FileReader(archivo);
       	BufferedReader b = new BufferedReader(f);
       	while((cadena = b.readLine())!=null) {
@@ -1218,7 +1697,6 @@ public class Interfaz extends javax.swing.JFrame {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> AlgoritmoMemoria;
     private javax.swing.JRadioButton CpuFifo;
     private javax.swing.JRadioButton CpuHrrn;
     private javax.swing.JRadioButton CpuRR;
@@ -1236,7 +1714,6 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -1248,7 +1725,6 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
@@ -1259,6 +1735,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelCpuRestante;
     private javax.swing.JLabel jLabelEnvejecimiento;
     private javax.swing.JLabel jLabelLlegada;
+    private javax.swing.JLabel jLabelNPNombre;
     private javax.swing.JLabel jLabelNombre;
     private javax.swing.JLabel jLabelQuantumRestante;
     private javax.swing.JLabel jLabelTiempoActual;
@@ -1268,10 +1745,10 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner3;
-    private javax.swing.JSpinner jSpinner4;
+    private javax.swing.JSpinner jSpinnerPaginaEjecutar;
+    private javax.swing.JSpinner jSpinnerPaginas;
     private javax.swing.JSpinner jSpinnerQuantum;
+    private javax.swing.JSpinner jSpinnerTotalEjec;
     private javax.swing.JTable jTableDatos;
     // End of variables declaration//GEN-END:variables
 }
